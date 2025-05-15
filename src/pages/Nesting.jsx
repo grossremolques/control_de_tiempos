@@ -141,7 +141,7 @@ export default function Nesting() {
     try {
       const { status, error } = await updateNesting(modalData.id, formData);
       if (error) {
-        throw new Error(res.error.message);
+        throw new Error(error.message);
       }
       if (status === 200) {
         setResponseGeneral({
