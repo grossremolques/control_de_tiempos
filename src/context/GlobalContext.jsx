@@ -109,7 +109,6 @@ export const GlobalContextProvider = ({ children }) => {
     const totalTonNoMecanizada = totalTonNoMecanizadaCorte + totalTonNoMecanizadaNesting;
     const totalTonMecanizada = getTonInPeriod(mecanizado, startDate, endDate);
     const totalTon = totalTonNoMecanizada + totalTonMecanizada;
-    console.log("totalTon", totalTon);
     return totalTon;
   };
   const turnToDate = (date) => {
