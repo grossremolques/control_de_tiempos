@@ -1,5 +1,9 @@
 import { createContext, useContext, useState } from "react";
-import { ss_mecanizado, ss_corte, ss_nesting } from "../Backend/initialize_sheets";
+import {
+  ss_mecanizado,
+  ss_corte,
+  ss_nesting,
+} from "../Backend/initialize_sheets";
 
 const GlobalContext = createContext();
 export const useGlobal = () => useContext(GlobalContext);
@@ -44,9 +48,9 @@ export const GlobalContextProvider = ({ children }) => {
       if (error) {
         throw new Error(error.message);
       }
-      return {status};
+      return { status };
     } catch (e) {
-      return {error: e};
+      return { error: e };
     }
   };
   const updateCorte = async (id, values) => {
@@ -59,9 +63,9 @@ export const GlobalContextProvider = ({ children }) => {
       if (error) {
         throw new Error(error.message);
       }
-      return {status};
+      return { status };
     } catch (e) {
-      return {error: e};
+      return { error: e };
     }
   };
   const updateNesting = async (id, values) => {
@@ -74,10 +78,27 @@ export const GlobalContextProvider = ({ children }) => {
       if (error) {
         throw new Error(error.message);
       }
-      return {status};
+      return { status };
     } catch (e) {
-      return {error: e};
+      return { error: e };
     }
+  };
+  const getTonInPeriod = (data, startDate, endDate) => {
+    const start = turnToDate(startDate);
+    const end = turnToDate(endDate);
+    const filteredData = data.filter((item) => {
+      const date = turnToDate(item.f_fin);
+      return date >= start && date <= end;
+    });
+    const totalTon = filteredData.reduce((acc, item) => acc + item.tn_procesadas, 0);
+    return totalTon;
+  };
+  const turnToDate = (date) => {
+    const year = date.split("-")[0];
+    const month = date.split("-")[1];
+    const day = date.split("-")[2];
+    const newDate = new Date(year, month - 1, day);
+    return newDate;
   };
   return (
     <GlobalContext.Provider
@@ -93,6 +114,7 @@ export const GlobalContextProvider = ({ children }) => {
         updateNesting,
         responseGeneral,
         setResponseGeneral,
+        getTonInPeriod,
       }}
     >
       {children}

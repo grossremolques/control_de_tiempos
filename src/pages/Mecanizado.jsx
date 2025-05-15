@@ -3,7 +3,7 @@ import { useGlobal } from "../context/GlobalContext";
 import { useEffect, useState } from "react";
 import { useModal } from "../context/ModalContext";
 import Modal from "../components/Modal";
-import Input from "../components/Forms";
+import { Input, Select } from "../components/Forms";
 import { Button } from "../components/Forms";
 import Badge from "../components/Badge";
 export default function Mecanizado() {
@@ -52,7 +52,7 @@ export default function Mecanizado() {
     },
     {
       name: "TN procesada",
-      selector: (row) => row.tn_procesadas,
+      selector: (row) => row.tn_procesadas.toPrecision(5),
       width: "140px",
     },
     {
@@ -176,14 +176,15 @@ export default function Mecanizado() {
     }
   };
   const handleFilter = () => {
-    const search = document.getElementById("search").value;
-    if (search) {
-      const data = mecanizado.filter((item) => item.id.toLocaleString().includes(search));
-      setFilteredData(data);
-    }
-    else {
-      setFilteredData(mecanizado);
-    }
+    const searchID = document.getElementById("searchID").value;
+    const searchStatus = document.getElementById("searchStatus").value;
+    const data = mecanizado.filter((item) => {
+      return (
+        item.id.toLocaleString().includes(searchID) &&
+        item.status.toLocaleString().includes(searchStatus)
+      );
+    });
+    setFilteredData(data);
   };
   return (
     <div className="mt-6 ">
@@ -192,10 +193,16 @@ export default function Mecanizado() {
           <form className="flex gap-2 justify-end items-end mb-4">
             <Input
               label="Buscar por ID"
-              type="number"
-              id="search"
+              type="search"
+              id="searchID"
               placeholder="Buscar por ID"
             />
+            <Select label="Status" id="searchStatus">
+              <option value="Nuevo">Nuevo</option>
+              <option value="PDF Generado">PDF Generado</option>
+              <option value="Recibido">Recibido</option>
+              <option value="Completado">Completado</option>
+            </Select>
             <Button
               type="button"
               size="sm"

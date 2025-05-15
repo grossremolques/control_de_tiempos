@@ -1,5 +1,5 @@
 import React from "react";
-export default function Input({ label, type, id }) {
+export function Input({ label, type, id, defaultValue, onChange }) {
   return (
     <label htmlFor={id}>
       <span className="text-sm font-medium text-gray-700"> {label} </span>
@@ -9,7 +9,24 @@ export default function Input({ label, type, id }) {
         id={id}
         name={id}
         className="mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm"
+        defaultValue={defaultValue}
+        onChange={onChange}
       />
+    </label>
+  );
+}
+export function Select({ label, id, children }) {
+  return (
+    <label htmlFor={id}>
+      <span className="text-sm font-medium text-gray-700"> {label} </span>
+<select
+      name={id}
+      id={id}
+      className="mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm"
+    >
+      <option value="">Seleccionar</option>
+      {children}
+    </select>
     </label>
   );
 }
