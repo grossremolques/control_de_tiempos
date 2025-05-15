@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router";
+import { RouterProvider, createBrowserRouter, createHashRouter } from "react-router";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Ordenes from "./pages/Ordenes";
@@ -10,7 +10,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import { GlobalContextProvider } from "./context/GlobalContext";
 import { ModalContextProvider } from "./context/ModalContext";
 import Error from "./pages/Error";
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Layout />,
