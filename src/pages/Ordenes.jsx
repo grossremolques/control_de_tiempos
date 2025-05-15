@@ -15,19 +15,23 @@ export default function Ordenes() {
     mecanizado,
     nesting,
     getTonInPeriod,
+    getTonInPeriodTotal,
   } = useGlobal();
   const [totales, setTotales] = useState({
     corte: 0,
     mecanizado: 0,
+    total: 0,
   });
   const [period, setPeriod] = useState(null);
   useEffect(() => {
     getStartMonthDate();
   }, []);
   useEffect(() => {
-    getCorte();
-    getNesting();
-    getMecanizado();
+    if (period) {
+      getCorte();
+      getNesting();
+      getMecanizado();
+    }
   }, [period]);
   useEffect(() => {
     if (
@@ -41,6 +45,7 @@ export default function Ordenes() {
           getTonInPeriod(corte, period.start, period.end) +
           getTonInPeriod(nesting, period.start, period.end),
         mecanizado: getTonInPeriod(mecanizado, period.start, period.end),
+        total: getTonInPeriodTotal(period.start, period.end),
       });
     }
   }, [corte, nesting, period]);
@@ -84,7 +89,7 @@ export default function Ordenes() {
           </span>
 
           <div>
-            <p className="text-2xl font-medium text-gray-900">0 Tn</p>
+            <p className="text-2xl font-medium text-gray-900">{totales.total.toPrecision(5)} Tn</p>
             <p className="text-sm text-gray-500">
               Tonelas totales procesadas en el sector
             </p>
@@ -110,7 +115,9 @@ export default function Ordenes() {
           </span>
 
           <div>
-            <p className="text-2xl font-medium text-gray-900">{totales.mecanizado.toPrecision(5)} Tn</p>
+            <p className="text-2xl font-medium text-gray-900">
+              {totales.mecanizado.toPrecision(5)} Tn
+            </p>
             <p className="text-sm text-gray-500">
               Tonelas totales procesadas en mecanizado
             </p>

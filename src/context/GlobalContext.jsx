@@ -93,6 +93,25 @@ export const GlobalContextProvider = ({ children }) => {
     const totalTon = filteredData.reduce((acc, item) => acc + item.tn_procesadas, 0);
     return totalTon;
   };
+  const getTonInPeriodTotal = (startDate, endDate) => {
+    const start = turnToDate(startDate);
+    const end = turnToDate(endDate);
+    const corteNoMecanizado = corte.filter((item) => {
+      const date = turnToDate(item.f_fin);
+      return date >= start && date <= end;
+    })
+    const totalTonNoMecanizadaCorte = corteNoMecanizado.reduce((acc, item) => acc + item.tn_no_mecanizada, 0);
+    const nestingNoMecanizado = corte.filter((item) => {
+      const date = turnToDate(item.f_fin);
+      return date >= start && date <= end;
+    })
+    const totalTonNoMecanizadaNesting = nestingNoMecanizado.reduce((acc, item) => acc + item.tn_no_mecanizada, 0);
+    const totalTonNoMecanizada = totalTonNoMecanizadaCorte + totalTonNoMecanizadaNesting;
+    const totalTonMecanizada = getTonInPeriod(mecanizado, startDate, endDate);
+    const totalTon = totalTonNoMecanizada + totalTonMecanizada;
+    console.log("totalTon", totalTon);
+    return totalTon;
+  };
   const turnToDate = (date) => {
     const year = date.split("-")[0];
     const month = date.split("-")[1];
@@ -106,15 +125,16 @@ export const GlobalContextProvider = ({ children }) => {
         mecanizado,
         corte,
         nesting,
+        responseGeneral,
         getCorte,
         getMecanizado,
         getNesting,
         updateMecanizado,
         updateCorte,
         updateNesting,
-        responseGeneral,
         setResponseGeneral,
         getTonInPeriod,
+        getTonInPeriodTotal
       }}
     >
       {children}
