@@ -93,6 +93,9 @@ export default function Ordenes() {
             <p className="text-sm text-gray-500">
               Tonelas totales procesadas en el sector
             </p>
+            <p className="text-sm text-blue-500">
+              Sumatoria de toneladas procesadas en corte no mecanizadas + las toneladas procesadas en mecanizado
+            </p>
           </div>
         </article>
         <article className="flex items-center gap-4 rounded-lg border border-gray-100 bg-white p-6">
